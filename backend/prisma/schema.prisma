@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Claim {
+  id                 String     @id @default(uuid())
+  make               String?
+  model              String?
+  year               String?
+  registrationNumber String?
+  status             String     @default("PENDING")
+  aiAnalysis         String?
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+  documents          Document[]
+  userId             String?
+  user               User?      @relation(fields: [userId], references: [id])
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String?
+  googleId  String?
+  claims    Claim[]
+  createdAt DateTime @default(now())
+}
+
+model Document {
+  id           String   @id @default(uuid())
+  originalName String
+  filename     String
+  path         String
+  size         Int
+  mimetype     String
+  claimId      String?
+  claim        Claim?   @relation(fields: [claimId], references: [id])
+  createdAt    DateTime @default(now())
+}
