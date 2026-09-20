@@ -1,4 +1,5 @@
 // ClaimLens — New Claim Upload Page
+import { API_BASE_URL } from '../config.js';
 
 export function renderNewClaim() {
   return `
@@ -333,8 +334,8 @@ export function initNewClaim() {
     formData.append('files', file);
 
     try {
-      // Send the file to our new Express backend
-      const response = await fetch('http://localhost:3000/api/upload', {
+      // Send the file to our Express backend
+      const response = await fetch(`${API_BASE_URL}/api/upload`, {
         method: 'POST',
         body: formData
       });
@@ -421,7 +422,7 @@ export function initNewClaim() {
         `;
 
         // 1. Create Claim Record in Database
-        const claimRes = await fetch('http://localhost:3000/api/claims', {
+        const claimRes = await fetch(`${API_BASE_URL}/api/claims`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ make, model, year, registrationNumber: reg })
@@ -429,7 +430,7 @@ export function initNewClaim() {
         const claimData = await claimRes.json();
 
         // 2. Trigger Gemini LLM Claim Analysis
-        const analyzeRes = await fetch('http://localhost:3000/api/claims/analyze', {
+        const analyzeRes = await fetch(`${API_BASE_URL}/api/claims/analyze`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

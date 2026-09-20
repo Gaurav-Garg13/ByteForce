@@ -1,4 +1,5 @@
 import { updateAuthState } from '../main.js';
+import { API_BASE_URL } from '../config.js';
 
 export function renderAuth() {
   return `
@@ -138,7 +139,7 @@ export function initAuth() {
       submitBtn.textContent = 'Authenticating...';
       submitBtn.disabled = true;
       
-      const response = await fetch(`http://localhost:3000${endpoint}`, {
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -173,7 +174,7 @@ export function initAuth() {
       if (btnGoogleAuth) btnGoogleAuth.disabled = true;
       if (googleBtnText) googleBtnText.textContent = 'Connecting with Google...';
 
-      const response = await fetch('http://localhost:3000/api/auth/google', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/google`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(googleUser)
