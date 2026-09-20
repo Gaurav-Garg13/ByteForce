@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: carinsu-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install && npx prisma db push
+    startCommand: node server.js
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: carinsu-db
+          property: connectionString
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+
+databases:
+  - name: carinsu-db
+    databaseName: carinsu_db
+    user: carinsu_user
